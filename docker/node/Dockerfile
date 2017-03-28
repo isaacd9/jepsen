@@ -4,19 +4,11 @@ RUN rm /etc/apt/apt.conf.d/docker-clean && \
     apt-get update &&  \
     apt-get install -y \
         sudo \
+        vim \
         net-tools \
-        wget \
         sysvinit-core \
         sysvinit \
         sysvinit-utils \
-        curl \
-        vim \
-        man \
-        faketime \
-        unzip \
-        iptables \
-        iputils-ping \
-        logrotate \
         openssh-server && \
         apt-get remove -y --purge --auto-remove systemd && \
     mkdir /var/run/sshd && \
