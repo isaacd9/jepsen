@@ -2,9 +2,13 @@ version: '2'
 services:
   control:
     container_name: jepsen-control
-    hostname: control
     build: ./control
-    env_file: ./secret/control.env
+    hostname: control
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../:/jepsen
+      - ./secret:/root/.ssh
     privileged: true
     links:
       - n1
@@ -15,8 +19,9 @@ services:
   node:
     container_name: jepsen-node
     build: ./node
-    env_file: ./secret/node.env
     privileged: true
+    volumes:
+      - ./secret:/root/.ssh
   n1:
     extends: node
     container_name: jepsen-n1

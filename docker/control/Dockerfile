@@ -16,19 +16,21 @@ RUN apt-get -y -q update && \
         git \
         gnuplot \
         wget \
-	vim # not required by jepsen itself, just for ease of use
+        vim \
+        openssh-server && \
+    mkdir /var/run/sshd && \
+    chmod 0755 /var/run/sshd
 
 RUN wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && \
     mv lein /usr/bin && \
     chmod +x /usr/bin/lein && \
     lein self-install
 
-# You need to locate jepsen in this directory (up.sh does that automatically)
-ADD jepsen /jepsen
-RUN cd /jepsen/jepsen && lein install
-
 ADD ./bashrc /root/.bashrc
-ADD ./init.sh /init.sh
-RUN chmod +x /init.sh
 
-CMD /init.sh
+CMD cd /jepsen/jepsen && \
+    lein install && \
+    echo "" > ~/.ssh/known_hosts && \
+    for n in $(seq 1 5); do ssh-keyscan -t rsa n$n; done >> ~/.ssh/known_hosts && \
+    /bin/bash
+
