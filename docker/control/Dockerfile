@@ -16,10 +16,7 @@ RUN apt-get -y -q update && \
         git \
         gnuplot \
         wget \
-        vim \
-        openssh-server && \
-    mkdir /var/run/sshd && \
-    chmod 0755 /var/run/sshd
+        vim
 
 RUN wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && \
     mv lein /usr/bin && \
